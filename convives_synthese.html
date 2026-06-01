@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apéro Saké 2026 – Convives</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a1209;
+    --washi:     #f5f0e8;
+    --washi2:    #ede7d9;
+    --gold:      #b8860b;
+    --gold-lt:   #d4a843;
+    --rouge:     #8b1a1a;
+    --encre:     #2c3e50;
+    --border:    rgba(184,134,11,0.35);
+    --shadow:    rgba(26,18,9,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--washi);
+    background-image:
+      radial-gradient(ellipse at 15% 20%, rgba(184,134,11,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(139,26,26,0.05) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .header .kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--rouge);
+    display: block;
+    line-height: 1.1;
+  }
+  .header .subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    margin-top: 0.4rem;
+  }
+  .header .date {
+    font-size: 0.95rem;
+    color: #7a6a50;
+    margin-top: 0.6rem;
+    letter-spacing: 0.08em;
+    font-weight: 300;
+  }
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.2rem auto 0;
+    max-width: 360px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-lt), transparent);
+  }
+  .divider .mon {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+  }
+
+  /* ── TABLE WRAPPER ── */
+  .table-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow-x: auto;
+    border-radius: 4px;
+    box-shadow: 0 8px 40px var(--shadow), 0 2px 8px rgba(184,134,11,0.08);
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(0.82rem, 1.6vw, 0.98rem);
+    background: #fff;
+  }
+
+  /* ── HEADER ROW ── */
+  thead tr {
+    background: var(--ink);
+  }
+  thead th {
+    padding: 1rem 1.1rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 400;
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--washi);
+    text-align: left;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  thead th:last-child { border-right: none; }
+  thead th .jp {
+    display: block;
+    font-size: 0.8em;
+    color: var(--gold-lt);
+    letter-spacing: 0.06em;
+    font-weight: 300;
+    margin-top: 2px;
+    font-style: normal;
+  }
+
+  /* ── BODY ROWS ── */
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(184,134,11,0.04); }
+
+  tbody td {
+    padding: 1rem 1.1rem;
+    vertical-align: top;
+    border-right: 1px solid rgba(184,134,11,0.15);
+    line-height: 1.55;
+  }
+  tbody td:last-child { border-right: none; }
+
+  /* Colonne NOM */
+  .col-nom {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 600;
+    font-size: 1.05em;
+    white-space: nowrap;
+    color: var(--rouge);
+    min-width: 100px;
+  }
+  .col-nom .pseudo {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78em;
+    font-weight: 300;
+    font-style: italic;
+    color: #8a7060;
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Badge OUVERTURE */
+  .badge {
+    display: inline-block;
+    padding: 0.2em 0.75em;
+    border-radius: 20px;
+    font-size: 0.82em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .badge-intrepide   { background: #fef3cd; color: #8b6914; border: 1px solid #d4a843; }
+  .badge-aventurier  { background: #e8f4f0; color: #2d7a5e; border: 1px solid #5aab8b; }
+  .badge-assez       { background: #e8f0f9; color: #2d4f7a; border: 1px solid #6a94c9; }
+  .badge-prudent     { background: #fde8e8; color: #8b1a1a; border: 1px solid #c97070; }
+
+  /* Badge SAKÉ */
+  .sake-badge {
+    display: inline-block;
+    padding: 0.18em 0.65em;
+    border-radius: 3px;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .sake-amateur  { background: var(--ink); color: var(--gold-lt); }
+  .sake-novice   { background: #4a5568; color: #cbd5e0; }
+  .sake-pasfan   { background: #742a2a; color: #fed7d7; }
+
+  /* Allergies */
+  .allergie-none  { color: #6b7280; font-style: italic; font-size: 0.9em; }
+  .allergie-alert { color: var(--rouge); font-weight: 600; }
+
+  /* Préférences — tags */
+  .pref-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+  }
+  .pref-tag {
+    background: var(--washi2);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 3px;
+    padding: 0.15em 0.55em;
+    font-size: 0.78em;
+    color: #4a3f2f;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  tbody tr:hover .pref-tag { background: rgba(184,134,11,0.12); }
+
+  /* Notes */
+  .note-text {
+    font-style: italic;
+    font-size: 0.88em;
+    color: #6b5a45;
+    line-height: 1.4;
+  }
+  .note-text strong {
+    font-weight: 600;
+    color: var(--rouge);
+    font-style: normal;
+  }
+
+  /* ── LÉGENDE ── */
+  .legend {
+    max-width: 1100px;
+    margin: 1.6rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: #7a6a50;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    animation: fadeUp 0.9s 0.45s ease both;
+  }
+  .footer small {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    color: #9a8a70;
+    letter-spacing: 0.12em;
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    body { padding: 2rem 0.75rem 3rem; }
+    .col-nom { min-width: 80px; }
+    thead th, tbody td { padding: 0.75rem 0.65rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="kanji">日本酒 の 集い</span>
+  <span class="subtitle">Apéro Saké 2026 — Synthèse des convives</span>
+  <p class="date">13 juin 2026 &nbsp;·&nbsp; Réponses reçues au 31 mai 2026 — <strong style="color:var(--rouge);">Régine en attente</strong></p>
+  <div class="divider"><span class="mon">🍶</span></div>
+</header>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Convive <span class="jp">お名前</span></th>
+      <th>Allergies <span class="jp">アレルギー</span></th>
+      <th>Ouverture <span class="jp">気持ち</span></th>
+      <th>Saké <span class="jp">日本酒</span></th>
+      <th>Préférences alimentaires <span class="jp">食の好み</span></th>
+      <th>Notes <span class="jp">コメント</span></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- PLUME -->
+    <tr>
+      <td class="col-nom">Plume</td>
+      <td><span class="allergie-alert">⚠ Gluten</span></td>
+      <td><span class="badge badge-intrepide">Intrépide !</span></td>
+      <td><span class="sake-badge sake-amateur">Amateur</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Épices &amp; condiments forts</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+        </div>
+      </td>
+      <td><span class="note-text">—</span></td>
+    </tr>
+
+    <!-- CILMAC -->
+    <tr>
+      <td class="col-nom">CilMac</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-intrepide">Intrépide !</span></td>
+      <td><span class="sake-badge sake-amateur">Amateur</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Épices &amp; condiments forts</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Saveurs acides &amp; fermentées</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text"><em>«&nbsp;J'adore le Saké et la bouffe japonaise&nbsp;!!&nbsp;»</em></span></td>
+    </tr>
+
+    <!-- ma BICHE -->
+    <tr>
+      <td class="col-nom">ma Biche</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-aventurier">Aventurier·e</span></td>
+      <td><span class="sake-badge sake-novice">Novice</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text"><em>«&nbsp;Je m'engage dans le respect de mes réponses au questionnaire&nbsp;»</em></span></td>
+    </tr>
+
+    <!-- PAT -->
+    <tr>
+      <td class="col-nom">Pat</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-prudent">Prudent·e</span></td>
+      <td><span class="sake-badge sake-pasfan">Pas fan</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td>
+        <span class="note-text">
+          <strong>✗</strong> Poulpe &amp; bulots<br>
+          <strong>✗</strong> Poisson cru<br>
+          <em>«&nbsp;Je ne m'engage à rien&nbsp;»</em>
+        </span>
+      </td>
+    </tr>
+
+    <!-- RÉGINE — placeholder -->
+    <tr style="opacity:0.55;">
+      <td class="col-nom">Régine<span class="pseudo">en attente</span></td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td><span class="note-text" style="font-style:italic;color:#aaa;">Réponse non reçue</span></td>
+      <td>—</td>
+    </tr>
+
+    <!-- ISABELLE -->
+    <tr>
+      <td class="col-nom">Isabelle</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-assez">Assez ouvert·e</span></td>
+      <td><span class="sake-badge sake-novice">Novice</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text">—</span></td>
+    </tr>
+
+    <!-- OLIVIER -->
+    <tr>
+      <td class="col-nom">Olivier</td>
+      <td><span class="allergie-alert">⚠ Huîtres</span></td>
+      <td><span class="badge badge-prudent">Prudent·e</span></td>
+      <td><span class="sake-badge sake-novice">Novice</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Épices &amp; condiments forts</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text"><strong>⚠</strong> Allergie aux huîtres</span></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <span class="badge badge-intrepide">Intrépide</span> Prêt·e à tout goûter
+  </div>
+  <div class="legend-item">
+    <span class="badge badge-aventurier">Aventurier·e</span> Ouvert·e, avec curiosité
+  </div>
+  <div class="legend-item">
+    <span class="badge badge-assez">Assez ouvert·e</span> Globalement curieux·se
+  </div>
+  <div class="legend-item">
+    <span class="badge badge-prudent">Prudent·e</span> Réservé·e sur certains aliments
+  </div>
+  <div class="legend-item">
+    <span class="allergie-alert" style="font-size:0.82rem;">⚠ Allergie signalée</span> — à prendre en compte pour chaque plat
+  </div>
+</div>
+
+<footer class="footer">
+  いただきます
+  <small>Itadakimasu — 13 juin 2026</small>
+</footer>
+
+</body>
+</html>
