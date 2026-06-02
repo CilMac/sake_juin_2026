@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apéro Saké 2026 – Convives</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a1209;
+    --washi:     #f5f0e8;
+    --washi2:    #ede7d9;
+    --gold:      #b8860b;
+    --gold-lt:   #d4a843;
+    --rouge:     #8b1a1a;
+    --encre:     #2c3e50;
+    --border:    rgba(184,134,11,0.35);
+    --shadow:    rgba(26,18,9,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--washi);
+    background-image:
+      radial-gradient(ellipse at 15% 20%, rgba(184,134,11,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(139,26,26,0.05) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .header .kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--rouge);
+    display: block;
+    line-height: 1.1;
+  }
+  .header .subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    margin-top: 0.4rem;
+  }
+  .header .date {
+    font-size: 0.95rem;
+    color: #7a6a50;
+    margin-top: 0.6rem;
+    letter-spacing: 0.08em;
+    font-weight: 300;
+  }
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.2rem auto 0;
+    max-width: 360px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-lt), transparent);
+  }
+  .divider .mon {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+  }
+
+  /* ── TABLE WRAPPER ── */
+  .table-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow-x: auto;
+    border-radius: 4px;
+    box-shadow: 0 8px 40px var(--shadow), 0 2px 8px rgba(184,134,11,0.08);
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(0.82rem, 1.6vw, 0.98rem);
+    background: #fff;
+  }
+
+  /* ── HEADER ROW ── */
+  thead tr {
+    background: var(--ink);
+  }
+  thead th {
+    padding: 1rem 1.1rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 400;
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--washi);
+    text-align: left;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  thead th:last-child { border-right: none; }
+  thead th .jp {
+    display: block;
+    font-size: 0.8em;
+    color: var(--gold-lt);
+    letter-spacing: 0.06em;
+    font-weight: 300;
+    margin-top: 2px;
+    font-style: normal;
+  }
+
+  /* ── BODY ROWS ── */
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(184,134,11,0.04); }
+
+  tbody td {
+    padding: 1rem 1.1rem;
+    vertical-align: top;
+    border-right: 1px solid rgba(184,134,11,0.15);
+    line-height: 1.55;
+  }
+  tbody td:last-child { border-right: none; }
+
+  /* Colonne NOM */
+  .col-nom {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 600;
+    font-size: 1.05em;
+    white-space: nowrap;
+    color: var(--rouge);
+    min-width: 100px;
+  }
+  .col-nom .pseudo {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78em;
+    font-weight: 300;
+    font-style: italic;
+    color: #8a7060;
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Badge OUVERTURE */
+  .badge {
+    display: inline-block;
+    padding: 0.2em 0.75em;
+    border-radius: 20px;
+    font-size: 0.82em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .badge-intrepide   { background: #fef3cd; color: #8b6914; border: 1px solid #d4a843; }
+  .badge-aventurier  { background: #e8f4f0; color: #2d7a5e; border: 1px solid #5aab8b; }
+  .badge-assez       { background: #e8f0f9; color: #2d4f7a; border: 1px solid #6a94c9; }
+  .badge-prudent     { background: #fde8e8; color: #8b1a1a; border: 1px solid #c97070; }
+
+  /* Badge SAKÉ */
+  .sake-badge {
+    display: inline-block;
+    padding: 0.18em 0.65em;
+    border-radius: 3px;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .sake-amateur  { background: var(--ink); color: var(--gold-lt); }
+  .sake-novice   { background: #4a5568; color: #cbd5e0; }
+  .sake-pasfan   { background: #742a2a; color: #fed7d7; }
+
+  /* Allergies */
+  .allergie-none  { color: #6b7280; font-style: italic; font-size: 0.9em; }
+  .allergie-alert { color: var(--rouge); font-weight: 600; }
+
+  /* Préférences — tags */
+  .pref-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+  }
+  .pref-tag {
+    background: var(--washi2);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 3px;
+    padding: 0.15em 0.55em;
+    font-size: 0.78em;
+    color: #4a3f2f;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  tbody tr:hover .pref-tag { background: rgba(184,134,11,0.12); }
+
+  /* Notes */
+  .note-text {
+    font-style: italic;
+    font-size: 0.88em;
+    color: #6b5a45;
+    line-height: 1.4;
+  }
+  .note-text strong {
+    font-weight: 600;
+    color: var(--rouge);
+    font-style: normal;
+  }
+
+  /* ── LÉGENDE ── */
+  .legend {
+    max-width: 1100px;
+    margin: 1.6rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: #7a6a50;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    animation: fadeUp 0.9s 0.45s ease both;
+  }
+  .footer small {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    color: #9a8a70;
+    letter-spacing: 0.12em;
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    body { padding: 2rem 0.75rem 3rem; }
+    .col-nom { min-width: 80px; }
+    thead th, tbody td { padding: 0.75rem 0.65rem; }
+  }
+
+  /* ── BOUTON NARINE ── */
+  /* ── BOUTON STATS ── */
+  .narine-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 auto 2.2rem;
+    padding: 0.65rem 1.5rem 0.65rem 1.1rem;
+    background: var(--ink);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--washi);
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    width: fit-content;
+    box-shadow: 0 3px 14px rgba(26,18,9,0.22);
+  }
+  .narine-btn:hover {
+    background: #2d1e10;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26,18,9,0.3);
+  }
+  .narine-btn .narine-nose { font-size: 1.3rem; line-height: 1; }
+  .narine-btn .narine-label {
+    display: flex; flex-direction: column; gap: 1px; text-align: left;
+  }
+  .narine-btn .narine-label strong {
+    font-weight: 600; font-size: 0.95rem;
+    color: var(--gold-lt); letter-spacing: 0.05em;
+  }
+  .narine-btn .narine-label span {
+    font-size: 0.75rem; font-style: italic;
+    color: rgba(245,240,232,0.55); letter-spacing: 0.03em;
+  }
+
+  /* ── OVERLAY & MODAL STATS ── */
+  .berur-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,18,9,0.75); z-index: 2000;
+    align-items: center; justify-content: center;
+    padding: 1.5rem; backdrop-filter: blur(4px);
+  }
+  .berur-overlay.open { display: flex; animation: statsFadeIn 0.2s ease; }
+  @keyframes statsFadeIn { from { opacity:0; } to { opacity:1; } }
+
+  .berur-modal {
+    background: #faf6ed; border-radius: 10px;
+    max-width: 480px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 28px 90px rgba(26,18,9,0.5);
+    animation: statsPop 0.3s cubic-bezier(0.34,1.38,0.64,1) both;
+    position: relative;
+  }
+  @keyframes statsPop {
+    from { opacity:0; transform: scale(0.9) translateY(16px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+  .berur-close-x {
+    position: absolute; top: 0.55rem; right: 0.65rem;
+    width: 26px; height: 26px;
+    background: rgba(26,18,9,0.12); border: none; border-radius: 50%;
+    color: var(--ink); font-size: 0.85rem; line-height: 26px;
+    text-align: center; cursor: pointer; z-index: 10;
+    transition: background 0.15s;
+  }
+  .berur-close-x:hover { background: rgba(26,18,9,0.22); }
+
+  /* ── HEADER STATS ── */
+  .stats-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.2rem 1.6rem 1rem;
+    background: var(--ink);
+    border-radius: 10px 10px 0 0;
+  }
+  .stats-kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 2rem; font-weight: 300;
+    color: var(--gold); line-height: 1;
+  }
+  .stats-header strong {
+    display: block; color: var(--washi);
+    font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .stats-header span {
+    display: block; color: rgba(245,240,232,0.5);
+    font-size: 0.78rem; font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* ── CORPS STATS ── */
+  .stats-body { padding: 1.2rem 1.5rem 0.5rem; }
+
+  .stats-section { margin-bottom: 0.2rem; }
+
+  .stats-label {
+    font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold);
+    font-family: 'Noto Serif JP', serif;
+    margin-bottom: 0.65rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .stats-jp {
+    font-size: 0.85em; letter-spacing: 0.06em;
+    color: rgba(184,134,11,0.55); font-weight: 300;
+  }
+
+  .stats-bars { display: flex; flex-direction: column; gap: 0.45rem; }
+  .stats-bar-row {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .stats-cat {
+    width: 100px; flex-shrink: 0;
+    font-size: 0.88rem; color: #5a4a38;
+    text-align: right; font-style: italic;
+  }
+  .stats-bar-wrap {
+    flex: 1; height: 10px;
+    background: rgba(184,134,11,0.1);
+    border-radius: 5px; overflow: hidden;
+  }
+  .stats-bar {
+    height: 100%; border-radius: 5px;
+    background: var(--gold);
+    transition: width 0.6s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  .stats-bar--vert  { background: #4a9a6a; }
+  .stats-bar--bleu  { background: #5a80b8; }
+  .stats-bar--rouge { background: var(--rouge); }
+  .stats-val {
+    width: 16px; flex-shrink: 0;
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--ink); text-align: left;
+  }
+
+  .stats-divider {
+    height: 1px; margin: 1rem 0;
+    background: linear-gradient(to right, transparent, rgba(184,134,11,0.3), transparent);
+  }
+
+  /* ── PILLS ── */
+  .stats-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stats-pill {
+    display: inline-block;
+    padding: 0.22em 0.75em;
+    border-radius: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.82rem; font-style: italic;
+    background: var(--washi2);
+    border: 1px solid rgba(184,134,11,0.25);
+    color: #4a3f2f;
+  }
+  .stats-pill--alert {
+    background: #fde8e8; border-color: #c97070;
+    color: var(--rouge); font-style: normal; font-weight: 600;
+  }
+  .stats-pill--gold {
+    background: rgba(184,134,11,0.1);
+    border-color: rgba(184,134,11,0.4); color: #6a5010;
+  }
+
+  /* ── PUNCH FINAL ── */
+  .stats-punch {
+    margin: 0.6rem 1.5rem 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--ink);
+    border-radius: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; color: var(--washi);
+    line-height: 1.55; text-align: center;
+  }
+  .stats-punch strong { color: var(--gold-lt); font-weight: 600; white-space: nowrap; }
+  .stats-punch small {
+    display: block; margin-top: 0.5rem;
+    font-size: 0.9rem; font-style: italic;
+    color: rgba(245,240,232,0.85);
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="kanji">日本酒 の 集い</span>
+  <span class="subtitle">Apéro Saké 2026 — Synthèse des convives</span>
+  <p class="date">13 juin 2026 &nbsp;·&nbsp; Toutes les réponses reçues au 2 juin 2026 &nbsp;✓</p>
+  <div class="divider"><span class="mon">🍶</span></div>
+</header>
+
+<button class="narine-btn" onclick="document.getElementById('statsOverlay').classList.add('open');document.body.style.overflow='hidden'">
+  <span class="narine-nose">📊</span>
+  <span class="narine-label">
+    <strong>Le groupe en chiffres</strong>
+    <span>Qui serez-vous le 13 juin&nbsp;?</span>
+  </span>
+</button>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Convive <span class="jp">お名前</span></th>
+      <th>Allergies <span class="jp">アレルギー</span></th>
+      <th>Ouverture <span class="jp">気持ち</span></th>
+      <th>Saké <span class="jp">日本酒</span></th>
+      <th>Préférences alimentaires <span class="jp">食の好み</span></th>
+      <th>Notes <span class="jp">コメント</span></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- PLUME -->
+    <tr>
+      <td class="col-nom">Plume</td>
+      <td><span class="allergie-alert">⚠ Gluten</span></td>
+      <td><span class="badge badge-intrepide">Intrépide !</span></td>
+      <td><span class="sake-badge sake-amateur">Amateur</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Épices &amp; condiments forts</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+        </div>
+      </td>
+      <td><span class="note-text">—</span></td>
+    </tr>
+
+    <!-- CILMAC -->
+    <tr>
+      <td class="col-nom">CilMac</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-intrepide">Intrépide !</span></td>
+      <td><span class="sake-badge sake-amateur">Amateur</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Épices &amp; condiments forts</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Saveurs acides &amp; fermentées</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text"><em>«&nbsp;J'adore le Saké et la bouffe japonaise&nbsp;!!&nbsp;»</em></span></td>
+    </tr>
+
+    <!-- ma BICHE -->
+    <tr>
+      <td class="col-nom">ma Biche</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-aventurier">Aventurier·e</span></td>
+      <td><span class="sake-badge sake-novice">Novice</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text"><em>«&nbsp;Je m'engage dans le respect de mes réponses au questionnaire&nbsp;»</em></span></td>
+    </tr>
+
+    <!-- PAT -->
+    <tr>
+      <td class="col-nom">Pat</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-prudent">Prudent·e</span></td>
+      <td><span class="sake-badge sake-pasfan">Pas fan</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td>
+        <span class="note-text">
+          <strong>✗</strong> Poulpe &amp; bulots<br>
+          <strong>✗</strong> Poisson cru<br>
+          <em>«&nbsp;Je ne m'engage à rien&nbsp;»</em>
+        </span>
+      </td>
+    </tr>
+
+    <!-- RÉGINE -->
+    <tr>
+      <td class="col-nom">Régine</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-prudent">Prudent·e</span></td>
+      <td><span class="sake-badge sake-pasfan">Pas fan</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text">—</span></td>
+    </tr>
+
+    <!-- ISABELLE -->
+    <tr>
+      <td class="col-nom">Isabelle</td>
+      <td><span class="allergie-none">Aucune</span></td>
+      <td><span class="badge badge-assez">Assez ouvert·e</span></td>
+      <td><span class="sake-badge sake-novice">Novice</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Sashimi / poisson cru</span>
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Algues &amp; saveurs marines</span>
+          <span class="pref-tag">Fruits de mer &amp; crustacés</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text">—</span></td>
+    </tr>
+
+    <!-- OLIVIER -->
+    <tr>
+      <td class="col-nom">Olivier</td>
+      <td><span class="allergie-alert">⚠ Huîtres</span></td>
+      <td><span class="badge badge-prudent">Prudent·e</span></td>
+      <td><span class="sake-badge sake-novice">Novice</span></td>
+      <td>
+        <div class="pref-list">
+          <span class="pref-tag">Umami (bouillon, dashi…)</span>
+          <span class="pref-tag">Épices &amp; condiments forts</span>
+          <span class="pref-tag">Riz &amp; céréales</span>
+          <span class="pref-tag">Œufs &amp; préparations à base d'œufs</span>
+          <span class="pref-tag">Noix &amp; oléagineux grillés</span>
+          <span class="pref-tag">Sucré-salé</span>
+        </div>
+      </td>
+      <td><span class="note-text"><strong>⚠</strong> Allergie aux huîtres</span></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <span class="badge badge-intrepide">Intrépide</span> Prêt·e à tout goûter
+  </div>
+  <div class="legend-item">
+    <span class="badge badge-aventurier">Aventurier·e</span> Ouvert·e, avec curiosité
+  </div>
+  <div class="legend-item">
+    <span class="badge badge-assez">Assez ouvert·e</span> Globalement curieux·se
+  </div>
+  <div class="legend-item">
+    <span class="badge badge-prudent">Prudent·e</span> Réservé·e sur certains aliments
+  </div>
+  <div class="legend-item">
+    <span class="allergie-alert" style="font-size:0.82rem;">⚠ Allergie signalée</span> — à prendre en compte pour chaque plat
+  </div>
+</div>
+
+<footer class="footer">
+  いただきます
+  <small>Itadakimasu — 13 juin 2026</small>
+</footer>
+
+<!-- Modale Stats -->
+<div class="berur-overlay" id="statsOverlay" onclick="if(event.target===this)closeStats()">
+  <div class="berur-modal stats-modal">
+    <button class="berur-close-x" onclick="closeStats()">✕</button>
+
+    <div class="stats-header">
+      <span class="stats-kanji">七人</span>
+      <div>
+        <strong>Le groupe le 13 juin</strong>
+        <span>7 convives · 13 juin 2026</span>
+      </div>
+    </div>
+
+    <div class="stats-body">
+
+      <!-- Ouverture culinaire -->
+      <div class="stats-section">
+        <div class="stats-label">Ouverture culinaire <span class="stats-jp">食の冒険心</span></div>
+        <div class="stats-bars">
+          <div class="stats-bar-row">
+            <span class="stats-cat">Intrépide</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar" style="width:28.6%" data-val="2"></div>
+            </div>
+            <span class="stats-val">2</span>
+          </div>
+          <div class="stats-bar-row">
+            <span class="stats-cat">Aventurier·e</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar stats-bar--vert" style="width:14.3%" data-val="1"></div>
+            </div>
+            <span class="stats-val">1</span>
+          </div>
+          <div class="stats-bar-row">
+            <span class="stats-cat">Assez ouvert·e</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar stats-bar--bleu" style="width:14.3%" data-val="1"></div>
+            </div>
+            <span class="stats-val">1</span>
+          </div>
+          <div class="stats-bar-row">
+            <span class="stats-cat">Prudent·e</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar stats-bar--rouge" style="width:42.8%" data-val="3"></div>
+            </div>
+            <span class="stats-val">3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-divider"></div>
+
+      <!-- Rapport au saké -->
+      <div class="stats-section">
+        <div class="stats-label">Rapport au saké <span class="stats-jp">日本酒との関係</span></div>
+        <div class="stats-bars">
+          <div class="stats-bar-row">
+            <span class="stats-cat">Amateur</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar" style="width:28.6%" data-val="2"></div>
+            </div>
+            <span class="stats-val">2</span>
+          </div>
+          <div class="stats-bar-row">
+            <span class="stats-cat">Novice</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar stats-bar--bleu" style="width:42.8%" data-val="3"></div>
+            </div>
+            <span class="stats-val">3</span>
+          </div>
+          <div class="stats-bar-row">
+            <span class="stats-cat">Pas fan</span>
+            <div class="stats-bar-wrap">
+              <div class="stats-bar stats-bar--rouge" style="width:28.6%" data-val="2"></div>
+            </div>
+            <span class="stats-val">2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-divider"></div>
+
+      <!-- Allergies -->
+      <div class="stats-section">
+        <div class="stats-label">Allergies &amp; restrictions <span class="stats-jp">アレルギー</span></div>
+        <div class="stats-pills">
+          <span class="stats-pill stats-pill--alert">⚠ Gluten · 1 convive</span>
+          <span class="stats-pill stats-pill--alert">⚠ Huîtres · 1 convive</span>
+          <span class="stats-pill">✓ Aucune · 5 convives</span>
+        </div>
+      </div>
+
+      <div class="stats-divider"></div>
+
+      <!-- Préférences communes -->
+      <div class="stats-section">
+        <div class="stats-label">Préférences partagées par tous <span class="stats-jp">共通の好み</span></div>
+        <div class="stats-pills">
+          <span class="stats-pill stats-pill--gold">Riz &amp; céréales</span>
+          <span class="stats-pill stats-pill--gold">Sucré-salé</span>
+          <span class="stats-pill stats-pill--gold">Noix &amp; oléagineux</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Punch final -->
+    <div class="stats-punch">
+      🍶 Bon, y a du taf… mais je suis sûr qu'à la fin de la soirée, <strong>il y aura sept amateurs intrépides&nbsp;!!</strong>
+      <small>CilMac 😁</small>
+    </div>
+
+    <div style="text-align:center; padding: 0 1.5rem 1.4rem;">
+      <button onclick="closeStats()" style="
+        padding: 0.5rem 2rem;
+        background: transparent;
+        border: 1px solid rgba(184,134,11,0.5);
+        border-radius: 20px;
+        color: var(--gold);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 0.95rem;
+        font-style: italic;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        transition: all 0.18s;
+      " onmouseover="this.style.background='rgba(184,134,11,0.1)'" onmouseout="this.style.background='transparent'">
+        かんぱい — Au 13 juin&nbsp;!
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function closeStats() {
+  document.getElementById('statsOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeStats(); });
+</script>
+
+</body>
+</html>
