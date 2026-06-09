@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Défi saké — quiz interactif</title>
+  <style>
+    :root{
+      --ink:#26313f; --muted:#667085; --paper:#fffaf1; --paper2:#fffdf8;
+      --red:#b6423a; --red2:#8f2f2a; --gold:#d8a642; --green:#47745f; --blue:#2f5f86;
+      --shadow:0 22px 60px rgba(47,38,25,.22); --radius:28px;
+    }
+    *{box-sizing:border-box} html{height:100%}
+    body{min-height:100%; margin:0; color:var(--ink); font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:radial-gradient(circle at 14% 12%,rgba(216,166,66,.28),transparent 28%),radial-gradient(circle at 82% 20%,rgba(182,66,58,.18),transparent 30%),radial-gradient(circle at 50% 92%,rgba(71,116,95,.18),transparent 35%),linear-gradient(135deg,#f8efe0 0%,#fffaf2 52%,#f3eadb 100%); overflow-x:hidden;}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.34;background-image:linear-gradient(90deg,rgba(120,96,66,.05) 1px,transparent 1px),linear-gradient(0deg,rgba(120,96,66,.04) 1px,transparent 1px);background-size:22px 22px;mix-blend-mode:multiply}
+    .wrap{width:min(1120px,100%);margin:0 auto;padding:clamp(18px,3.5vw,42px) clamp(14px,3vw,28px) 36px;position:relative}
+    header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}.brand{display:flex;gap:14px;align-items:center}.mon{width:54px;height:54px;flex:0 0 54px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--red),#cf6b50);box-shadow:0 12px 26px rgba(142,47,42,.25);font-size:25px}h1{margin:0;font-size:clamp(1.55rem,4.8vw,3.2rem);line-height:1.02;letter-spacing:-.045em}.subtitle{margin:.38rem 0 0;color:var(--muted);font-size:clamp(.95rem,2.6vw,1.08rem)}.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(38,49,63,.12);background:rgba(255,255,255,.60);backdrop-filter:blur(12px);border-radius:999px;padding:10px 14px;color:#5a4b39;font-weight:800;white-space:nowrap;box-shadow:0 8px 22px rgba(80,58,28,.08)}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:22px;align-items:stretch}.card-shell{perspective:1200px;min-height:590px}.card{position:relative;min-height:590px;border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.84),rgba(255,250,241,.96)),radial-gradient(circle at top right,rgba(216,166,66,.18),transparent 38%);border:1px solid rgba(83,67,43,.16);box-shadow:var(--shadow);overflow:hidden}.card:before{content:"日本酒";position:absolute;top:18px;right:24px;color:rgba(182,66,58,.10);font-weight:950;font-size:clamp(3.8rem,10vw,7.6rem);letter-spacing:-.08em;writing-mode:vertical-rl;line-height:.85;pointer-events:none}.card-content{position:relative;z-index:1;padding:clamp(22px,4vw,40px)}
+    .level-screen{position:relative;z-index:1;padding:clamp(22px,4vw,44px)}.level-title{margin:0 0 8px;font-size:clamp(1.75rem,5vw,3.2rem);letter-spacing:-.05em;line-height:1.05}.level-intro{max-width:740px;color:#5f6671;line-height:1.5;margin:0 0 22px;font-size:1.06rem}.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.level-card{border:1px solid rgba(38,49,63,.13);background:rgba(255,255,255,.78);border-radius:24px;padding:18px;text-align:left;cursor:pointer;box-shadow:0 12px 28px rgba(49,39,26,.08);transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease}.level-card:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(49,39,26,.13);border-color:rgba(182,66,58,.28)}.level-emoji{font-size:2rem}.level-card h3{margin:10px 0 6px;font-size:1.25rem}.level-card p{margin:0;color:#657083;line-height:1.42}.level-count{display:inline-flex;margin-top:14px;border-radius:999px;background:#f3eadb;padding:7px 10px;font-weight:900;color:#6d5129}.level-small{margin-top:18px;color:#776b5e;font-size:.95rem}.level-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}.station{background:#fff;color:var(--red2);border:1px solid rgba(182,66,58,.16);border-radius:999px;padding:8px 12px;font-weight:950;box-shadow:0 6px 16px rgba(182,66,58,.08)}.theme{color:var(--muted);font-weight:850}.pill{background:rgba(216,166,66,.18);color:#765929;border-radius:999px;padding:8px 12px;font-weight:900}.question{margin:8px 0 22px;max-width:800px;font-size:clamp(1.38rem,3.8vw,2.32rem);line-height:1.13;letter-spacing:-.03em;font-weight:950}.hint{margin:-8px 0 22px;color:#736654;font-size:1rem;max-width:720px}.choices{display:grid;gap:13px;margin-top:16px}button{font:inherit;-webkit-tap-highlight-color:transparent}.choice{width:100%;border:1px solid rgba(38,49,63,.14);background:rgba(255,255,255,.82);border-radius:20px;padding:16px 17px;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:12px;text-align:left;cursor:pointer;box-shadow:0 8px 20px rgba(49,39,26,.06);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}.choice:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(49,39,26,.1)}.letter{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#f3eadb;color:#5f4a2b;font-weight:950}.choice .txt{font-weight:780;font-size:clamp(1rem,2.5vw,1.13rem)}.choice.correct{border-color:rgba(71,116,95,.55);background:rgba(71,116,95,.10)}.choice.correct .letter{background:var(--green);color:#fff}.choice.wrong{border-color:rgba(182,66,58,.50);background:rgba(182,66,58,.09)}.choice.wrong .letter{background:var(--red);color:#fff}.choice.dim{opacity:.58}.choice:disabled{cursor:default}.feedback{margin-top:18px;display:none;border-radius:22px;padding:16px 18px;background:rgba(255,255,255,.72);border:1px solid rgba(38,49,63,.12)}.feedback.show{display:block;animation:pop .22s ease both}@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.feedback strong{display:block;margin-bottom:4px;font-size:1.08rem}.feedback p{margin:.25rem 0 0;color:#4d5663;line-height:1.42}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{border:0;border-radius:999px;padding:13px 17px;font-weight:950;cursor:pointer;background:var(--ink);color:#fff;box-shadow:0 12px 22px rgba(38,49,63,.18)}.btn.secondary{background:#fff;color:var(--ink);border:1px solid rgba(38,49,63,.12);box-shadow:0 8px 16px rgba(38,49,63,.07)}.btn.red{background:var(--red)}.btn:disabled{opacity:.45;cursor:not-allowed}
+    aside{display:flex;flex-direction:column;gap:16px}.panel{border-radius:24px;background:rgba(255,255,255,.70);backdrop-filter:blur(12px);border:1px solid rgba(83,67,43,.14);box-shadow:0 16px 38px rgba(47,38,25,.12);padding:20px}.score-big{display:flex;align-items:baseline;gap:4px;margin-top:2px}#score{font-size:3.1rem;font-weight:950;letter-spacing:-.06em;color:var(--red2)}.outof{font-size:1.15rem;color:var(--muted);font-weight:850}.bar{height:12px;border-radius:999px;background:rgba(38,49,63,.10);overflow:hidden;margin-top:12px}.bar>span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:999px;transition:width .35s ease}.dots{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;max-height:168px;overflow:auto;padding-right:2px}.dot{width:13px;height:13px;border-radius:50%;background:rgba(38,49,63,.16);border:2px solid rgba(255,255,255,.72);box-shadow:0 2px 7px rgba(0,0,0,.08);flex:0 0 auto}.dot.active{background:var(--gold)}.dot.good{background:var(--green)}.dot.bad{background:var(--red)}.mini-title{font-weight:950;margin:0 0 8px;color:#3c3429}.mini-text{margin:0;color:#667085;line-height:1.45;font-size:.96rem}.statline{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(38,49,63,.09);padding-top:10px;margin-top:10px;color:#5f6671;font-weight:800}.result-screen{display:none;text-align:center;padding:clamp(26px,5vw,54px) clamp(18px,4vw,44px);position:relative;z-index:1}.result-screen.show{display:block}.result-medal{font-size:4.3rem;margin-bottom:8px}.result-title{font-size:clamp(1.9rem,5vw,3.3rem);margin:.2rem 0;letter-spacing:-.05em}.result-text{color:#5f6671;max-width:680px;margin:0 auto 20px;line-height:1.5;font-size:1.06rem}.hidden{display:none!important}footer{margin-top:18px;text-align:center;color:#7b7064;font-size:.9rem}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}aside{order:-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}.panel{padding:16px}.level-grid{grid-template-columns:1fr}.card,.card-shell{min-height:590px}.card:before{font-size:4rem;opacity:.75}.question{font-size:1.55rem}.choice{grid-template-columns:38px 1fr;padding:14px}.letter{width:38px;height:38px}}@media(max-width:560px){header{display:block}.chip{margin-top:14px;white-space:normal}aside{grid-template-columns:1fr}.score-big{display:none}.bar{margin-top:8px}.card,.card-shell{min-height:640px}.card-content,.level-screen{padding:20px}.actions .btn,.level-actions .btn{width:100%;justify-content:center}.dots{max-height:86px}.level-title{font-size:2rem}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><div class="mon" aria-hidden="true">酒</div><div><h1>Défi saké</h1><p class="subtitle">Cartes interactives — version définitive — 3 niveaux — apéro saké du 13 juin 2026</p></div></div>
+      <div class="chip">🍶 Version définitive · 84 questions · 3 niveaux</div>
+    </header>
+    <main class="layout">
+      <section class="card-shell">
+        <article class="card" id="quizCard">
+          <div class="level-screen" id="levelScreen">
+            <h2 class="level-title">Choisis ton niveau</h2>
+            <p class="level-intro"><strong>Voyons qui a bien suivi — et n’a pas les neurones trop embrumés ;-)</strong><br>Trois parcours, de la découverte tranquille au piège à kappa. Les questions sont mélangées à chaque lancement.</p>
+            <div class="level-grid" id="levelGrid"></div>
+            <div class="level-actions"><button class="btn secondary" id="allBtn">Mode banquet : toutes les questions</button></div>
+            <p class="level-small" id="bankInfo"></p>
+          </div>
+          <div class="card-content hidden" id="questionScreen">
+            <div class="kicker"><span class="station" id="counter">Carte 1 / 10</span><span class="theme" id="theme">Culture saké</span><span class="pill" id="levelPill">Niveau</span></div>
+            <h2 class="question" id="question">Question…</h2><p class="hint" id="hint"></p><div class="choices" id="choices"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+            <div class="actions"><button class="btn" id="nextBtn" disabled>Question suivante</button><button class="btn secondary" id="changeLevelBtn">Changer de niveau</button><button class="btn secondary" id="restartBtn">Recommencer ce niveau</button></div>
+          </div>
+          <div class="result-screen" id="resultScreen"><div class="result-medal" id="medal">🍶</div><h2 class="result-title" id="resultTitle">Résultat</h2><p class="result-text" id="resultText"></p><div class="actions" style="justify-content:center"><button class="btn" id="restartBtn2">Refaire ce niveau</button><button class="btn secondary" id="changeLevelBtn2">Changer de niveau</button></div></div>
+        </article>
+      </section>
+      <aside>
+        <div class="panel"><p class="mini-title">Score</p><div class="score-big"><span id="score">0</span><span class="outof" id="outof">/0</span></div><div class="bar" aria-hidden="true"><span id="progressBar"></span></div><div class="dots" id="dots" aria-label="Progression du quiz"></div></div>
+        <div class="panel"><p class="mini-title">Parcours</p><p class="mini-text" id="sideMode">Choisis un niveau pour démarrer.</p><div class="statline"><span>Questions</span><span id="sideCount">—</span></div><div class="statline"><span>Thèmes</span><span id="sideThemes">—</span></div></div>
+        <div class="panel"><p class="mini-title">Astuce</p><p class="mini-text">La bonne réponse s’affiche aussitôt avec une mini-explication. Idéal pour tester avant de l’intégrer dans la page principale.</p></div>
+      </aside>
+    </main>
+    <footer>Quiz séparé — relié depuis la page principale.</footer>
+  </div>
+<script>
+const bank = {
+  easy: {
+    label:"Découverte", emoji:"🍶", subtitle:"Bases, menu, grandes idées", desc:"Questions accessibles aux invités qui découvrent le saké.",
+    questions:[
+      {theme:"Culture saké",q:"Comment appelle-t-on le saké japonais dans le projet ?",hint:"La page le présente avec les caractères 日本酒.",choices:["Shōchū","Nihonshu","Umeshu"],answer:1,note:"日本酒 se lit nihonshu : c’est le saké japonais."},
+      {theme:"Date",q:"À quelle date est prévu l’apéro saké ?",hint:"C’est la grande date du projet.",choices:["13 juin 2026","8 novembre 2025","22 mai 2026"],answer:0,note:"La dégustation est programmée le 13 juin 2026."},
+      {theme:"Progression",q:"Combien de sakés composent la dégustation principale ?",hint:"Le menu parle de stations.",choices:["3","5","7"],answer:1,note:"La dégustation est construite en 5 stations."},
+      {theme:"Progression",q:"Quel saké ouvre la dégustation ?",hint:"Il est rustique, fermentaire et épais.",choices:["Dassai 45","Kappa no Doburoku","Gozenshu Kijoshu Hiire"],answer:1,note:"Le Kappa no Doburoku démarre la progression."},
+      {theme:"Final",q:"Quel saké clôture la dégustation avec les mochis ?",hint:"Il est moelleux et lactique.",choices:["Gozenshu Kijoshu Hiire","Minami Tokubetsu","Dassai 45"],answer:0,note:"Le Gozenshu Kijoshu Hiire est le final gourmand."},
+      {theme:"Dassai 45",q:"Le Dassai 45 est plutôt…",hint:"C’est le plus élégant et rassurant.",choices:["Floral et délicat","Fumé et tourbé","Très tannique"],answer:0,note:"Dassai 45 est aromatique, délicat et floral."},
+      {theme:"Malentendu",q:"Le vrai saké japonais est surtout issu de…",hint:"Rien à voir avec un alcool distillé.",choices:["Riz fermenté","Sorgho distillé","Raisin muté"],answer:0,note:"Le nihonshu est une boisson fermentée issue du riz."},
+      {theme:"Malentendu",q:"Le “saké” chinois de fin de repas en France est généralement…",hint:"La claque est nettement plus forte.",choices:["Un spiritueux distillé autour de 54°","Un saké japonais non filtré","Un vin de prune"],answer:0,note:"C’est plutôt du Mei Kuei Lu Chiew, spiritueux chinois distillé."},
+      {theme:"Recette",q:"Dans les onigiri, quelle garniture est prévue au centre ?",hint:"La mayonnaise japonaise intervient.",choices:["Thon et mayonnaise japonaise","Roquefort et shiso","Langoustine et yuzu kosho"],answer:0,note:"Les onigiri contiennent une pointe de thon-mayo."},
+      {theme:"Dashi",q:"Dans le dashi de langoustines, quelle pâte apporte la touche épicée ?",hint:"Agrume japonais + piment.",choices:["Yuzu kosho","Miso rouge","Wasabi pur"],answer:0,note:"Le yuzu kosho apporte la touche citronnée et épicée."},
+      {theme:"Fromages",q:"Quels fromages sont prévus dans la progression ?",hint:"Un accord sage, un accord plus audacieux.",choices:["Comté et Roquefort","Brie et chèvre frais","Mozzarella et parmesan"],answer:0,note:"Comté et Roquefort accompagnent le Hanatomoe."},
+      {theme:"Anecdote",q:"Quelle anecdote concerne le Kappa no Doburoku ?",hint:"Le personnage de l’étiquette a soif.",choices:["Le kappa aurait bu une partie de la bouteille","La bouteille s’ouvre au sabre","Il est servi flambé"],answer:0,note:"Le kappa aurait pris une gorgée, d’où le volume réel de 720 ml."},
+      {theme:"Service",q:"Que signifie いただきます — itadakimasu ?",hint:"On le dit avant de manger.",choices:["Bon appétit / je reçois humblement","Merci pour hier","À votre santé"],answer:0,note:"Itadakimasu se dit avant le repas."},
+      {theme:"Menu",q:"Avec quel saké sont servis les onigiri ?",hint:"Station 2, après le doburoku.",choices:["Dassai 45","Hanatomoe Mizumoto Nama","Gozenshu Kijoshu"],answer:0,note:"Les onigiri accompagnent le Dassai 45."},
+      {theme:"Menu",q:"Quels mochis sont prévus en fin de dégustation ?",hint:"Deux parfums très japonais.",choices:["Yuzu et matcha","Vanille et café","Sésame et fraise"],answer:0,note:"La fin prévoit des mochis yuzu et matcha."}
+    ]
+  },
+  medium: {
+    label:"Amateur", emoji:"🥢", subtitle:"Accords, styles, fabrication", desc:"Pour ceux qui ont lu la page et veulent jouer un peu.",
+    questions:[
+      {theme:"Kappa",q:"Quel type de saké est le Kappa no Doburoku ?",hint:"Il n’est ni pressé ni filtré comme un saké moderne limpide.",choices:["Doburoku artisanal non filtré","Ginjo pasteurisé limpide","Kijoshu oxydatif"],answer:0,note:"C’est un doburoku artisanal, trouble, texturé, non filtré."},
+      {theme:"Kappa",q:"Quel degré d’alcool est indiqué pour le Kappa no Doburoku ?",hint:"Il est plus léger que la plupart des sakés classiques.",choices:["10 % vol.","15 % vol.","54 % vol."],answer:0,note:"Le Kappa no Doburoku est autour de 10 % vol."},
+      {theme:"Dassai",q:"Dans “Dassai 45”, le 45 renvoie à quoi ?",hint:"C’est lié au riz restant après polissage.",choices:["Riz poli à 45 % restant","45 jours de fermentation","45 levures différentes"],answer:0,note:"45 indique un seimaibuai de 45 % : 55 % du grain a été retiré."},
+      {theme:"Dassai",q:"Le Dassai 45 est un…",hint:"Catégorie très raffinée.",choices:["Junmai Daiginjō","Tokubetsu Junmai","Doburoku"],answer:0,note:"Dassai 45 est un Junmai Daiginjō."},
+      {theme:"Minami",q:"Quel profil résume le Minami Tokubetsu Junmai dans le menu ?",hint:"Station 3.",choices:["Frais, net, épicé","Moelleux, lactique","Trouble, épais, rustique"],answer:0,note:"Le Minami est présenté comme frais, net et épicé."},
+      {theme:"Minami",q:"Avec quoi le Minami Tokubetsu est-il notamment prévu ?",hint:"Station à picorer sur plateau central.",choices:["Rouleaux concombre-saumon et sashimi","Mochis yuzu-matcha","Bouillon miso d’ouverture"],answer:0,note:"Il accompagne le plateau central : rouleaux, dashimaki, sashimi, riz."},
+      {theme:"Hanatomoe",q:"Le Hanatomoe Mizumoto Nama est…",hint:"Son nom dit déjà quelque chose.",choices:["Non pasteurisé","Distillé","Fortifié au shōchū"],answer:0,note:"Nama signifie non pasteurisé."},
+      {theme:"Hanatomoe",q:"Quel profil aromatique revient pour le Hanatomoe ?",hint:"Un saké de caractère.",choices:["Complexe, sauvage, puissant","Floral, léger, discret","Neutre, sucré, simple"],answer:0,note:"Le Hanatomoe est l’aventurier de la série : sauvage, acide, umami."},
+      {theme:"Gozenshu",q:"Qu’est-ce qu’un kijoshu ?",hint:"Une partie de l’eau de brassage est remplacée.",choices:["Un saké brassé avec du saké à la place d’une partie de l’eau","Un saké obligatoirement pétillant","Un saké chauffé avant bouteille"],answer:0,note:"Le kijoshu est brassé avec du saké en remplacement d’une partie de l’eau."},
+      {theme:"Gozenshu",q:"Quel riz est cité pour le Gozenshu Kijoshu Hiire ?",hint:"Grand nom traditionnel, associé à Okayama.",choices:["Omachi","Yamadanishiki","Koshihikari"],answer:0,note:"Le Gozenshu Kijoshu utilise du riz Omachi."},
+      {theme:"Fabrication",q:"Quel organisme transforme l’amidon du riz en sucres fermentescibles ?",hint:"Indispensable car le riz ne contient pas de sucres libres comme le raisin.",choices:["Koji","Kappa","Kasu"],answer:0,note:"Le koji, Aspergillus oryzae, produit les enzymes nécessaires."},
+      {theme:"Fabrication",q:"Comment s’appelle la fermentation principale ?",hint:"Elle a lieu en grande cuve.",choices:["Moromi","Oshibori","Nori"],answer:0,note:"Le moromi est la fermentation principale."},
+      {theme:"Fabrication",q:"Que signifie seimaibuai ?",hint:"C’est un pourcentage.",choices:["Pourcentage de grain restant après polissage","Taux de sucre résiduel","Température de service"],answer:0,note:"Un seimaibuai de 60 % signifie que 40 % du grain a été retiré."},
+      {theme:"Saké vs vin",q:"Pourquoi la fermentation du saké est-elle dite parallèle multiple ?",hint:"Deux transformations avancent ensemble.",choices:["L’amidon devient sucre pendant que le sucre devient alcool","Deux bouteilles fermentent en même temps","Le riz et le raisin fermentent ensemble"],answer:0,note:"Saccharification par le koji et fermentation par les levures se déroulent en parallèle."},
+      {theme:"Saké vs vin",q:"Le taux d’alcool du nihonshu classique est généralement proche de…",hint:"Plus proche du vin que du spiritueux chinois.",choices:["13 à 16 %","30 à 35 %","50 à 55 %"],answer:0,note:"Le nihonshu tourne en général autour de 13 à 16 % vol."},
+      {theme:"Recette",q:"Quand met-on le nori autour des onigiri ?",hint:"Pour éviter qu’il ramollisse.",choices:["Juste avant de servir","Avant cuisson du riz","La veille au congélateur"],answer:0,note:"Le nori est ajouté juste avant le service."},
+      {theme:"Recette",q:"Quel assaisonnement colore/parfume le riz des onigiri ?",hint:"Shiso rouge.",choices:["Furikake périlla","Curry japonais","Sansho vert"],answer:0,note:"Le riz est mélangé au furikake périlla, ou shiso rouge."},
+      {theme:"Dashi",q:"Le bouillon de langoustines contient aussi…",hint:"Petit ajout doux en finition.",choices:["Du lait de soja","De la crème fraîche","Du lait de coco"],answer:0,note:"Le lait de soja est ajouté hors du feu au bouillon filtré."},
+      {theme:"Tamagoyaki",q:"Dans le tamagoyaki, quel ingrédient apporte la douceur japonaise ?",hint:"Un classique de cuisine japonaise.",choices:["Mirin","Vinaigre balsamique","Saké chinois"],answer:0,note:"Le mirin apporte douceur et rondeur."},
+      {theme:"Petites recettes",q:"Les amandes grillées sont glacées avec…",hint:"Un mini caramel salé japonais.",choices:["Miso, mirin et sauce soja","Wasabi et citron","Matcha et sucre glace"],answer:0,note:"Le glaçage miso-mirin-shoyu donne une petite bombe umami."},
+      {theme:"Petites recettes",q:"Les edamame express sont saupoudrés avec…",hint:"À doser doucement pour ne pas écraser le saké.",choices:["Matcha","Cacao","Piment fumé"],answer:0,note:"Les edamame grillées sont enrobées d’un peu de matcha."},
+      {theme:"Menu",q:"Que signifie oshibori ?",hint:"Présent au début du menu.",choices:["Serviette humide","Petite coupe à saké","Bouteille ouverte"],answer:0,note:"L’oshibori est la serviette humide offerte avant le repas."},
+      {theme:"Accord",q:"Quel accord est présenté comme audacieux et contrasté avec le Hanatomoe ?",hint:"Fromage puissant.",choices:["Roquefort","Mozzarella","Camembert doux"],answer:0,note:"Le Roquefort crée un contraste audacieux."},
+      {theme:"Service",q:"Quel type de verre est suggéré pour le Gozenshu Kijoshu ?",hint:"Pour exprimer son côté vin de dessert.",choices:["Verre à vin","Chope à bière","Bol à soupe"],answer:0,note:"Le Gozenshu Kijoshu gagne à être découvert dans un verre à vin."},
+      {theme:"Malentendu",q:"Le Mei Kuei Lu Chiew est aromatisé notamment avec…",hint:"D’où son nom autour de la rose.",choices:["Des pétales de rose","Du yuzu","Du riz koji"],answer:0,note:"Ce spiritueux chinois est aromatisé aux pétales de rose."}
+    ]
+  },
+  hard: {
+    label:"Expert", emoji:"🏯", subtitle:"Détails et pièges à kappa", desc:"Pour CilMac, Plume, et les convives qui lisent les petites lignes.",
+    questions:[
+      {theme:"Brasserie",q:"Quelle brasserie produit le Kappa no Doburoku ?",hint:"Elle est située à Kanagawa.",choices:["Kumazawa","Asahi Shuzo","Tsuji Honten"],answer:0,note:"Kappa no Doburoku vient de la brasserie Kumazawa."},
+      {theme:"Kappa",q:"Dans quelle région se situe la brasserie du Kappa no Doburoku ?",hint:"Côte de Shonan, vue sur le Fuji.",choices:["Kanagawa","Yamaguchi","Okayama"],answer:0,note:"La brasserie Kumazawa est à Kanagawa, région de Shonan."},
+      {theme:"Kappa",q:"Quel procédé est associé au Kappa no Doburoku ?",hint:"Le texte l’explique comme “pétrir”.",choices:["Neri","Bodaimoto","Kijoshu"],answer:0,note:"Le Kappa no Doburoku utilise un procédé unique appelé neri, pétrissage."},
+      {theme:"Kappa",q:"Pourquoi le Doburoku a-t-il un “petit goût d’interdit” ?",hint:"Au Japon, la production domestique est encadrée.",choices:["Sa production domestique sans licence est illégale","Il contient du raisin interdit","Il dépasse 60° d’alcool"],answer:0,note:"La production domestique de doburoku sans licence est illégale au Japon."},
+      {theme:"Dassai",q:"Quelle brasserie produit Dassai ?",hint:"La marque phare est Dassai.",choices:["Asahi Shuzo","Miyoshino Jozo","Minami Shuzojo"],answer:0,note:"Dassai est produit par Asahi Shuzo."},
+      {theme:"Dassai",q:"Dans quelle préfecture se trouve Asahi Shuzo ?",hint:"À l’ouest de Honshu.",choices:["Yamaguchi","Nara","Kochi"],answer:0,note:"Asahi Shuzo est dans la préfecture de Yamaguchi."},
+      {theme:"Dassai",q:"Quels arômes sont cités pour le Dassai 45 ?",hint:"Nez floral, fruits délicats.",choices:["Jasmin, fleurs blanches, poire, pomme douce","Cuir, fumée, poivre noir","Algue, iode, tourbe"],answer:0,note:"Dassai 45 est décrit avec jasmin, fleurs blanches, poire, pomme douce."},
+      {theme:"Minami",q:"Quelle eau donne son surnom “Tamanoi” à Minami Shuzojo ?",hint:"Une rivière proche de la brasserie.",choices:["L’eau de la rivière Yasuda","L’eau du lac Biwa","L’eau de la baie de Tokyo"],answer:0,note:"La rivière Yasuda passe près de la brasserie et alimente sa réputation."},
+      {theme:"Minami",q:"Quelle production annuelle faible est indiquée pour Minami ?",hint:"300 gokus, conversion donnée dans la fiche.",choices:["54 000 litres","540 000 litres","5 400 litres"],answer:0,note:"La fiche indique 300 gokus, soit environ 54 000 litres."},
+      {theme:"Minami",q:"Quel ancien Kuramoto a lancé la marque “Minami” en 1998 ?",hint:"Nom complet cité dans la fiche.",choices:["Sadaharu Minami","Soichiro Tsuji","Maiko Tsuji"],answer:0,note:"Sadaharu Minami a lancé la marque Minami en 1998."},
+      {theme:"Hanatomoe",q:"Quelle brasserie produit Hanatomoe ?",hint:"Elle se trouve dans la région de Yoshino.",choices:["Miyoshino Jozo","Tsuji Honten","Kumazawa"],answer:0,note:"Hanatomoe est produit par Miyoshino Jozo."},
+      {theme:"Hanatomoe",q:"Quel temple est lié à la méthode ancienne évoquée pour Hanatomoe ?",hint:"À Yoshino, période Muromachi.",choices:["Shoryaku-ji","Kinkaku-ji","Sensō-ji"],answer:0,note:"Le temple Shoryaku-ji est lié aux écrits anciens de la méthode Bodaimoto."},
+      {theme:"Hanatomoe",q:"Quelle méthode augmente l’acide lactique par trempage du riz ?",hint:"Astuce ancienne pour éviter les bactéries indésirables.",choices:["Bodaimoto / Mizumoto","Kijoshu","Semaibuai"],answer:0,note:"La méthode Bodaimoto/Mizumoto augmente l’acide lactique au départ."},
+      {theme:"Hanatomoe",q:"Quelles levures fermentent le Hanatomoe de la fiche ?",hint:"Pas une levure sélectionnée ajoutée classiquement.",choices:["Levures indigènes de l’air ambiant","Levures de champagne","Levures de bière blanche"],answer:0,note:"La fermentation est assurée par des levures indigènes présentes dans la brasserie."},
+      {theme:"Hanatomoe",q:"Dans quel bois les sakés Hanatomoe sont-ils produits ?",hint:"Cèdre japonais.",choices:["Sugui / sugi","Chêne français","Bambou noir"],answer:0,note:"La fiche mentionne des fûts de sugui, cèdre japonais."},
+      {theme:"Gozenshu",q:"Quelle brasserie produit Gozenshu Kijoshu Hiire ?",hint:"Fondée en 1804.",choices:["Tsuji Honten","Asahi Shuzo","Kumazawa"],answer:0,note:"Gozenshu est produit par Tsuji Honten."},
+      {theme:"Gozenshu",q:"À quoi renvoie le nom Gozenshu ?",hint:"Saké destiné à des seigneurs locaux.",choices:["Saké pour les seigneurs","Saké de printemps","Saké des montagnes"],answer:0,note:"Gozenshu signifie saké pour les seigneurs."},
+      {theme:"Gozenshu",q:"Qui est citée comme l’une des rares femmes tōji du Japon ?",hint:"Septième génération Tsuji.",choices:["Maiko Tsuji","Mayuko Tanaka","Miyoshi Hana"],answer:0,note:"Maiko Tsuji est citée comme l’une des rares femmes tōji."},
+      {theme:"Gozenshu",q:"Quel SMV est indiqué pour le Gozenshu Kijoshu Hiire ?",hint:"Très négatif, donc douceur marquée.",choices:["−24","+12","0"],answer:0,note:"Le SMV indiqué est −24."},
+      {theme:"Gozenshu",q:"Quelle acidité est indiquée pour le Gozenshu Kijoshu Hiire ?",hint:"Elle équilibre le moelleux.",choices:["2,2","0,4","7,8"],answer:0,note:"L’acidité indiquée est 2,2."},
+      {theme:"Fabrication",q:"Dans quoi cuit-on le riz à la vapeur ?",hint:"Terme cité dans la fiche fabrication.",choices:["Koshiki","Ochoko","Oshibori"],answer:0,note:"Le riz est cuit à la vapeur dans un koshiki."},
+      {theme:"Fabrication",q:"Comment s’appelle la salle où l’on prépare le koji ?",hint:"Salle contrôlée pour le champignon.",choices:["Koji muro","Moromi kura","Kappa no ma"],answer:0,note:"Le riz est transféré dans un koji muro pour l’ensemencement."},
+      {theme:"Fabrication",q:"Combien de temps dure la préparation du koji dans la fiche ?",hint:"Quelques jours.",choices:["3 jours","3 semaines","3 heures"],answer:0,note:"La préparation du koji dure environ 3 jours."},
+      {theme:"Fabrication",q:"Quel parfum peut dégager le koji selon la fiche ?",hint:"Image très gourmande.",choices:["Châtaigne","Menthe poivrée","Anis étoilé"],answer:0,note:"Le mélange dégage un parfum de châtaigne."},
+      {theme:"Fabrication",q:"Comment s’appelle le levain du saké ?",hint:"Avant le moromi.",choices:["Moto","Kasu","Neri"],answer:0,note:"Le moto est le levain où les levures se développent."},
+      {theme:"Fabrication",q:"Combien de temps dure la fermentation principale dans la fiche ?",hint:"Ordre de grandeur : plusieurs semaines.",choices:["3 à 5 semaines","24 heures","6 mois"],answer:0,note:"Le moromi dure environ 3 à 5 semaines."},
+      {theme:"Fabrication",q:"Que sépare le pressurage ?",hint:"Le précieux liquide d’un résidu solide.",choices:["Saké et kasu","Koji et levures mortes","Riz brun et riz blanc"],answer:0,note:"Le pressurage sépare le saké du kasu."},
+      {theme:"Polissage",q:"Jusqu’à quelle perte de poids le polissage peut-il aller dans certains styles raffinés ?",hint:"Chiffre impressionnant de la fiche.",choices:["75 %","25 %","5 %"],answer:0,note:"Certains styles très raffinés peuvent aller jusqu’à 75 % de perte."},
+      {theme:"Saké vs vin",q:"Dans le vin, la source de sucre est…",hint:"Contrairement au riz.",choices:["Le sucre naturel du raisin","L’amidon transformé par koji","Le sucre ajouté au brassage"],answer:0,note:"Le vin fermente les sucres naturellement présents dans le raisin."},
+      {theme:"Saké vs vin",q:"Dans le saké, le terroir s’exprime surtout par…",hint:"Autre logique que sol/cépage/exposition.",choices:["Eau, riz, levures, microclimat local","Barrique, tanins, appellation","Altitude des vignes"],answer:0,note:"Pour le saké, eau, riz, levures et climat de fermentation comptent beaucoup."},
+      {theme:"Saké vs vin",q:"Quel mot décrit souvent la sensation du saké en bouche ?",hint:"Texture plus que puissance tannique.",choices:["Soyeux / umami","Tannique / boisé","Astringent / cuir"],answer:0,note:"Le saké est souvent décrit comme soyeux, subtil, umami."},
+      {theme:"Menu",q:"Quel accompagnement ouvre la station Kappa no Doburoku ?",hint:"Bouillon d’ouverture.",choices:["Miso d’Enjuku Kōji","Foie gras poêlé","Sashimi de saumon"],answer:0,note:"La première station prévoit un bouillon d’ouverture au miso d’Enjuku Kōji."},
+      {theme:"Menu",q:"Quels assaisonnements sont cités pour les algues nori de la première station ?",hint:"Une série croustillante.",choices:["Tempura, épicées, assaisonnées, gingembre","Sucre, cannelle, cacao","Wasabi, crème, curry"],answer:0,note:"Le menu cite nori grillées : tempura, épicées, assaisonnées, gingembre."},
+      {theme:"Menu",q:"Quel riz est prévu avec le plateau central ?",hint:"Petit détail du menu.",choices:["Riz thaï","Riz noir vénéré","Risotto arborio"],answer:0,note:"Le menu indique du riz thaï avec la station Minami."},
+      {theme:"Recette dashi",q:"Combien de dashi en granulés est prévu pour le bouillon ?",hint:"Shimaya, konbu dashi no moto.",choices:["4 g","20 g","35 g"],answer:0,note:"La recette indique 4 g de dashi, soit un demi-sachet de 8 g pour 1 L."},
+      {theme:"Recette dashi",q:"Combien de gingembre frais est indiqué ?",hint:"Tu l’as déjà repéré dans le titre et la recette.",choices:["20 g","2 g","80 g"],answer:0,note:"La recette prévoit 20 g de gingembre frais haché."},
+      {theme:"Recette dashi",q:"Combien de temps les langoustines crues cuisent-elles dans le bouillon ?",hint:"Cuisson très courte pour les garder nacrées.",choices:["45 secondes à 1 minute","10 minutes","20 minutes"],answer:0,note:"La recette indique 45 secondes à 1 minute."},
+      {theme:"Recette onigiri",q:"Combien d’onigiri vise la recette au petit moule ?",hint:"Petite série.",choices:["6","12","18"],answer:0,note:"La recette est prévue pour 6 onigiri."},
+      {theme:"Recette onigiri",q:"Quelle quantité de furikake périlla est indiquée ?",hint:"Chiffre précis.",choices:["6,8 g","18 g","1,5 g"],answer:0,note:"La recette indique 6,8 g de furikake périlla."},
+      {theme:"Recette tamagoyaki",q:"Combien d’œufs la recette de tamagoyaki utilise-t-elle ?",hint:"Version pour 4 personnes.",choices:["6","3","12"],answer:0,note:"La recette de tamagoyaki indique 6 œufs."},
+      {theme:"Recette tamagoyaki",q:"Quelle quantité d’eau est ajoutée pour une omelette aérée ?",hint:"La fiche le précise.",choices:["100 g","10 g","500 g"],answer:0,note:"La recette prévoit 100 g d’eau."},
+      {theme:"Petites recettes",q:"À quelle température torréfie-t-on les amandes ?",hint:"Cuisson douce.",choices:["160 °C","220 °C","90 °C"],answer:0,note:"Les amandes sont torréfiées à 160 °C pendant 10 à 15 minutes."},
+      {theme:"Petites recettes",q:"Combien d’edamame grillés sont prévus pour la version matcha express ?",hint:"Quantité indiquée dans la fiche.",choices:["150 g","15 g","500 g"],answer:0,note:"La recette express prévoit 150 g d’edamame style grillés."},
+      {theme:"Petites recettes",q:"Dans les rouleaux concombre-saumon, quelle herbe japonaise apparaît ?",hint:"Feuille très parfumée.",choices:["Shiso","Mitsuba","Persil plat"],answer:0,note:"La recette prévoit une feuille de shiso."}
+    ]
+  }
+};
+
+const letters=["A","B","C"];
+let currentLevel=null, quiz=[], index=0, score=0, answered=false, history=[];
+const el=id=>document.getElementById(id);
+const levelScreen=el("levelScreen"), questionScreen=el("questionScreen"), resultScreen=el("resultScreen"), levelGrid=el("levelGrid"), bankInfo=el("bankInfo");
+const counter=el("counter"), theme=el("theme"), levelPill=el("levelPill"), question=el("question"), hint=el("hint"), choices=el("choices"), feedback=el("feedback"), nextBtn=el("nextBtn"), scoreEl=el("score"), outof=el("outof"), progressBar=el("progressBar"), dots=el("dots"), sideMode=el("sideMode"), sideCount=el("sideCount"), sideThemes=el("sideThemes");
+
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function shuffledQuestion(q){ const opts=q.choices.map((text,i)=>({text,correct:i===q.answer})); const shuffled=shuffle(opts); return {...q, choices:shuffled.map(o=>o.text), answer:shuffled.findIndex(o=>o.correct)}; }
+function allQuestions(){ return [...bank.easy.questions, ...bank.medium.questions, ...bank.hard.questions]; }
+function countThemes(qs){ return new Set(qs.map(q=>q.theme)).size; }
+
+function renderLevels(){
+  const levels=["easy","medium","hard"];
+  levelGrid.innerHTML="";
+  levels.forEach(key=>{
+    const l=bank[key];
+    const b=document.createElement("button");
+    b.className="level-card";
+    b.innerHTML=`<div class="level-emoji">${l.emoji}</div><h3>${l.label}</h3><p><b>${l.subtitle}</b><br>${l.desc}</p><span class="level-count">${l.questions.length} questions</span>`;
+    b.addEventListener("click",()=>startLevel(key));
+    levelGrid.appendChild(b);
+  });
+  const total=allQuestions().length;
+  bankInfo.textContent=`Banque actuelle : ${total} questions — ${bank.easy.questions.length} découverte, ${bank.medium.questions.length} amateur, ${bank.hard.questions.length} expert.`;
+  sideMode.textContent="Choisis un niveau pour démarrer."; sideCount.textContent="—"; sideThemes.textContent="—"; outof.textContent="/0"; scoreEl.textContent="0"; progressBar.style.width="0%"; dots.innerHTML="";
+}
+function startLevel(key){
+  currentLevel=key;
+  const source = key==="all" ? allQuestions() : bank[key].questions;
+  quiz = shuffle(source).map(shuffledQuestion);
+  index=0; score=0; answered=false; history=Array(quiz.length).fill(null);
+  initDots();
+  levelScreen.classList.add("hidden"); resultScreen.classList.remove("show"); questionScreen.classList.remove("hidden"); render();
+}
+function currentLabel(){ return currentLevel==="all" ? "Banquet" : bank[currentLevel].label; }
+function currentEmoji(){ return currentLevel==="all" ? "🎎" : bank[currentLevel].emoji; }
+function initDots(){ dots.innerHTML=""; quiz.forEach((_,i)=>{const d=document.createElement("span"); d.className="dot"; d.id="dot"+i; dots.appendChild(d);}); }
+function render(){
+  const item=quiz[index]; answered=false;
+  counter.textContent=`Carte ${index+1} / ${quiz.length}`; theme.textContent=item.theme; levelPill.textContent=`${currentEmoji()} ${currentLabel()}`; question.textContent=item.q; hint.textContent=item.hint||"";
+  feedback.className="feedback"; feedback.innerHTML=""; choices.innerHTML=""; nextBtn.disabled=true; nextBtn.textContent=index===quiz.length-1?"Voir le résultat":"Question suivante";
+  item.choices.forEach((c,i)=>{const b=document.createElement("button"); b.className="choice"; b.innerHTML=`<span class="letter">${letters[i]}</span><span class="txt">${c}</span>`; b.addEventListener("click",()=>choose(i)); choices.appendChild(b);});
+  updateProgress();
+}
+function choose(choiceIndex){
+  if(answered) return; answered=true; const item=quiz[index]; const ok=choiceIndex===item.answer; if(ok) score++; history[index]=ok;
+  [...choices.children].forEach((b,i)=>{ b.disabled=true; if(i===item.answer) b.classList.add("correct"); else if(i===choiceIndex) b.classList.add("wrong"); else b.classList.add("dim"); });
+  feedback.className="feedback show"; feedback.innerHTML= ok ? `<strong>✅ Bonne réponse</strong><p>${item.note}</p>` : `<strong>❌ Pas celle-ci</strong><p>La bonne réponse était <b>${letters[item.answer]}</b> — ${item.choices[item.answer]}. ${item.note}</p>`;
+  nextBtn.disabled=false; updateProgress();
+}
+function updateProgress(){
+  scoreEl.textContent=score; outof.textContent=`/${quiz.length}`; const done=history.filter(v=>v!==null).length; progressBar.style.width=`${(done/quiz.length)*100}%`;
+  quiz.forEach((_,i)=>{ const d=el("dot"+i); if(!d) return; d.className="dot" + (i===index && history[i]===null ? " active" : "") + (history[i]===true ? " good" : "") + (history[i]===false ? " bad" : ""); });
+  sideMode.textContent = currentLevel ? `${currentEmoji()} ${currentLabel()}` : "Choisis un niveau pour démarrer."; sideCount.textContent = quiz.length || "—"; sideThemes.textContent = quiz.length ? countThemes(quiz) : "—";
+}
+function showResult(){
+  questionScreen.classList.add("hidden"); resultScreen.classList.add("show"); const medal=el("medal"), title=el("resultTitle"), text=el("resultText"); const pct=score/quiz.length;
+  if(pct>=.9){medal.textContent="🏯"; title.textContent=`${score}/${quiz.length} — Maître du nihonshu`; text.textContent="Très solide. Tu peux animer la dégustation sans trembler devant un kappa facétieux.";}
+  else if(pct>=.72){medal.textContent="🍶"; title.textContent=`${score}/${quiz.length} — Très bon service`; text.textContent="La progression, les accords et le malentendu sont bien maîtrisés. Encore un petit passage et c’est parfait.";}
+  else if(pct>=.45){medal.textContent="🥢"; title.textContent=`${score}/${quiz.length} — Honorable dégustateur`; text.textContent="Les bases sont là, mais quelques cartes méritent une deuxième tournée.";}
+  else {medal.textContent="😅"; title.textContent=`${score}/${quiz.length} — Kappa distrait`; text.textContent="Le kappa n’a pas seulement bu la bouteille : il a aussi piqué quelques réponses. On recommence tranquillement.";}
+}
+function next(){ if(index<quiz.length-1){index++; render();} else showResult(); }
+function restart(){ if(currentLevel) startLevel(currentLevel); }
+function backToLevels(){ currentLevel=null; quiz=[]; index=0; score=0; history=[]; questionScreen.classList.add("hidden"); resultScreen.classList.remove("show"); levelScreen.classList.remove("hidden"); renderLevels(); }
+nextBtn.addEventListener("click",next); el("restartBtn").addEventListener("click",restart); el("restartBtn2").addEventListener("click",restart); el("changeLevelBtn").addEventListener("click",backToLevels); el("changeLevelBtn2").addEventListener("click",backToLevels); el("allBtn").addEventListener("click",()=>startLevel("all"));
+renderLevels();
+</script>
+</body>
+</html>
